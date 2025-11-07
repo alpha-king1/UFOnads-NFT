@@ -5,7 +5,7 @@ import { ethers } from 'ethers';
 
 // CONTRACT ADDRESSES
 const NFT_CONTRACT_ADDRESS = "0xc96eE45A7afe24f549B4480Cd60d7C2B7fd14871";
-const RAFFLE_CONTRACT_ADDRESS = "0xc412212BB476fF78bb55FDFc9f19AC497F02556A";
+const RAFFLE_CONTRACT_ADDRESS = "0x2aEd298dbCc343D511fc4Fd0473c240c25637b1B";
 
 // MONAD TESTNET CONFIG
 const MONAD_TESTNET = {
@@ -19,19 +19,20 @@ const MONAD_TESTNET = {
 // CONTRACT ABIs
 const NFT_ABI = ["function balanceOf(address owner) view returns (uint256)"];
 const RAFFLE_ABI = [
-  "function enterRaffle() external",
+  "function enterRaffle() payable external",
   "function hasUserEntered(address) view returns (bool)",
   "function getCurrentRaffleId() view returns (uint256)",
   "function getRaffleEndTime() view returns (uint256)",
   "function getPrizePool() view returns (uint256)"
 ];
 
+
 const AlienRaffleUI = () => {
   const [walletConnected, setWalletConnected] = useState(false);
   const [walletAddress, setWalletAddress] = useState('');
   const [isHolder, setIsHolder] = useState('');
   const [hasEntered, setHasEntered] = useState(false);
-  const [timeLeft, setTimeLeft] = useState({ days: 3, hours: 14, minutes: 23, seconds: 45 });
+  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [currentRound, setCurrentRound] = useState(12);
   const [prizePool, setPrizePool] = useState('500');
   const [isEntering, setIsEntering] = useState(false);
@@ -44,34 +45,49 @@ const AlienRaffleUI = () => {
     { round: 9, address: '0x3a2f...7c8d', prize: '500 MONAD', date: 'Oct 1, 2025' },
   ];
 
-  // Countdown timer
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft(prev => {
-        let { days, hours, minutes, seconds } = prev;
-        
-        if (seconds > 0) {
-          seconds--;
-        } else if (minutes > 0) {
-          minutes--;
-          seconds = 59;
-        } else if (hours > 0) {
-          hours--;
-          minutes = 59;
-          seconds = 59;
-        } else if (days > 0) {
-          days--;
-          hours = 23;
-          minutes = 59;
-          seconds = 59;
-        }
-        
-        return { days, hours, minutes, seconds };
-      });
-    }, 1000);
+useEffect(() => {
+  let timer;
+  
+  const loadRaffleTime = async () => {
+    try {
+      const provider = new ethers.providers.JsonRpcProvider(MONAD_TESTNET.rpcUrls[0]);
+      const raffleContract = new ethers.Contract(RAFFLE_CONTRACT_ADDRESS, RAFFLE_ABI, provider);
+      
+      const endTime = await raffleContract.getRaffleEndTime();
+      
+      // Update timer every second
+      const end = endTime.toNumber();
 
-    return () => clearInterval(timer);
-  }, []);
+const updateTimer = () => {
+  const now = Math.floor(Date.now() / 1000);
+  const diff = end - now;
+
+  if (diff > 0) {
+    const days = Math.floor(diff / 86400);
+    const hours = Math.floor((diff % 86400) / 3600);
+    const minutes = Math.floor((diff % 3600) / 60);
+    const seconds = diff % 60;
+    setTimeLeft({ days, hours, minutes, seconds });
+  } else {
+    setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  }
+};
+
+// Update immediately, then start interval
+updateTimer();
+timer = setInterval(updateTimer, 1000);
+
+    } catch (error) {
+      console.error('Error loading raffle time:', error);
+    }
+  };
+  
+  loadRaffleTime();
+  
+  return () => {
+    if (timer) clearInterval(timer);
+  };
+}, []); // Empty = runs immediately on mount
 
   const connectWallet = async () => {
   try {
@@ -122,7 +138,7 @@ const AlienRaffleUI = () => {
   }
 };
 
-  const enterRaffle = async () => {
+const enterRaffle = async () => {
   try {
     setIsEntering(true);
     
@@ -131,7 +147,11 @@ const AlienRaffleUI = () => {
     
     const raffleContract = new ethers.Contract(RAFFLE_CONTRACT_ADDRESS, RAFFLE_ABI, signer);
     
-    const tx = await raffleContract.enterRaffle();
+    // Send 1 MON with the transaction
+    const entryFee = ethers.utils.parseEther("1"); // 1 MON
+    console.log('Sending 1 MON entry fee');
+    
+    const tx = await raffleContract.enterRaffle({ value: entryFee });
     console.log('Transaction:', tx.hash);
     
     await tx.wait();
@@ -139,9 +159,18 @@ const AlienRaffleUI = () => {
     setHasEntered(true);
     setShowSuccess(true);
     setTimeout(() => setShowSuccess(false), 3000);
+    
   } catch (error) {
     console.error("Error entering raffle:", error);
-    alert('Failed: ' + error.message);
+    
+    let errorMsg = 'Failed to enter raffle';
+    if (error.code === 4001) {
+      errorMsg = 'Transaction rejected';
+    } else if (error.reason) {
+      errorMsg = error.reason;
+    }
+    
+    alert(errorMsg);
   } finally {
     setIsEntering(false);
   }
