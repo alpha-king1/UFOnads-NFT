@@ -275,7 +275,7 @@ const UfonadsMint = () => {
           {/* Left: NFT Preview */}
           <div className="space-y-6">
             <img 
-                    src="/u.jpg" 
+                    src="/U.jpg" 
                     alt="UFONADS Alien" 
                     className="w-full aspect-square object-cover rounded-3xl border-2 border-purple-500/30"
                 />
