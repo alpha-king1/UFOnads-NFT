@@ -223,7 +223,7 @@ const UfonadsMint = () => {
             <div className="flex items-center gap-3">
               <Rocket className="w-8 h-8 text-cyan-400" />
               <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-                UFONADS
+                ALIEN
               </h1>
             </div>
             
@@ -275,8 +275,8 @@ const UfonadsMint = () => {
           {/* Left: NFT Preview */}
           <div className="space-y-6">
             <img 
-                    src="/U.jpg" 
-                    alt="UFONADS Alien" 
+                    src="/u.jpg" 
+                    alt="Alien" 
                     className="w-full aspect-square object-cover rounded-3xl border-2 border-purple-500/30"
                 />
 
@@ -415,4 +415,4 @@ const UfonadsMint = () => {
   );
 };
 
-export default UfonadsMint;
+export default ALIENMint;

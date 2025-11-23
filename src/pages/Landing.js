@@ -24,7 +24,7 @@ const UfonadsLanding = () => {
             <div className="flex items-center gap-3">
               <Rocket className="w-10 h-10 text-cyan-400" />
               <span className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-                UFONADS
+                ALIEN
               </span>
             </div>
 
@@ -79,7 +79,7 @@ const UfonadsLanding = () => {
               
               <h1 className="text-5xl md:text-7xl font-bold leading-tight">
                 <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                  UFONADS
+                  ALIEN
                 </span>
                 <br />
                 <span className="text-white">Alien NFTs</span>
@@ -122,7 +122,7 @@ const UfonadsLanding = () => {
             {/* Right: Image */}
             <div className="relative">
                 <img 
-                    src="U.jpg"  
+                    src="u.jpg"  
                     className="w-full aspect-square object-cover rounded-3xl border-2 border-purple-500/30"
                 />
               {/* Floating elements */}
@@ -139,7 +139,7 @@ const UfonadsLanding = () => {
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
               <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-                What is UFONADS?
+                What is ALIEN?
               </span>
             </h2>
             <p className="text-xl text-slate-300 max-w-3xl mx-auto">
@@ -260,7 +260,7 @@ const UfonadsLanding = () => {
               Ready to Join the Invasion?
             </h2>
             <p className="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
-              Mint your UFONADS alien NFT now and start winning weekly MON prizes. Limited supply of 999!
+              Mint your alien NFT now and start winning weekly MON prizes. Limited supply of 999!
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button onClick={() => window.location.href = '/mint'} className="group px-10 py-5 bg-gradient-to-r from-purple-600 to-cyan-600 rounded-xl font-bold text-xl hover:from-purple-500 hover:to-cyan-500 transition-all transform hover:scale-105 flex items-center justify-center gap-2">
@@ -282,7 +282,7 @@ const UfonadsLanding = () => {
             <div className="flex items-center gap-3">
               <Rocket className="w-8 h-8 text-cyan-400" />
               <span className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-                UFONADS
+                ALIEN
               </span>
             </div>
             <div className="flex gap-6 text-slate-400">
@@ -290,7 +290,7 @@ const UfonadsLanding = () => {
               <a href="#" className="hover:text-cyan-400 transition-colors">Discord</a>
               <a href="#" className="hover:text-cyan-400 transition-colors">Magic Eden</a>
             </div>
-            <p className="text-slate-400">Built on Monad • 2025 UFONADS</p>
+            <p className="text-slate-400">Built on Monad • 2025 ALIEN</p>
           </div>
         </div>
       </footer>
@@ -298,4 +298,4 @@ const UfonadsLanding = () => {
   );
 };
 
-export default UfonadsLanding;
+export default ALIENLanding;
