@@ -298,4 +298,4 @@ const UfonadsLanding = () => {
   );
 };
 
-export default ALIENLanding;
+export default UfonadsLanding;

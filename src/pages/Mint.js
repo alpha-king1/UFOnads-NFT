@@ -415,4 +415,4 @@ const UfonadsMint = () => {
   );
 };
 
-export default ALIENMint;
+export default UfonadsMint;
