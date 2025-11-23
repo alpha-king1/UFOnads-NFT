@@ -122,7 +122,7 @@ const UfonadsLanding = () => {
             {/* Right: Image */}
             <div className="relative">
                 <img 
-                    src="u.jpg"  
+                    src="u.jpeg"  
                     className="w-full aspect-square object-cover rounded-3xl border-2 border-purple-500/30"
                 />
               {/* Floating elements */}
